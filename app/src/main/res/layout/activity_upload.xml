@@ -5,6 +5,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@drawable/appbackpurple"
     tools:context=".UploadActivity">
 
 
@@ -24,6 +25,7 @@
             android:orientation="vertical"
             android:layout_gravity="center_horizontal"
             android:background="@drawable/edittext_border"
+
             android:padding="20dp">
 
             <TextView
@@ -68,9 +70,10 @@
                 android:layout_height="60dp"
                 android:backgroundTint="@color/mySecond"
                 android:text="Save"
-                android:textColor="@color/myPrime"
+                android:textStyle="bold"
+                android:textColor="@color/mySecond"
                 android:id="@+id/savebutton"
-                android:textSize="18dp"
+                android:textSize="25dp"
                 android:layout_marginTop="20dp"
                 app:cornerRadius = "40dp"
                 android:background="@drawable/edittext_border"/>

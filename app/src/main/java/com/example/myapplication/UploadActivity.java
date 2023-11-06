@@ -21,6 +21,11 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Toast;
 
+import com.example.myapplication.DBHelper;
+import com.example.myapplication.MainActivity;
+import com.example.myapplication.ModelClass;
+import com.example.myapplication.R;
+
 import java.io.IOException;
 
 public class UploadActivity extends AppCompatActivity {
@@ -46,23 +51,23 @@ public class UploadActivity extends AppCompatActivity {
         ActivityResultLauncher<Intent> activityResultLauncher = registerForActivityResult
                 (new ActivityResultContracts.StartActivityForResult(),
                         new ActivityResultCallback<ActivityResult>() {
-                    @Override
-                    public void onActivityResult(ActivityResult result) {
-                        if(result.getResultCode() == Activity.RESULT_OK){
-                            Intent data = result.getData();
-                            assert  data!= null;
-                            uri = data.getData();
-                            try {
-                                bitmapImage = MediaStore.Images.Media.getBitmap(getContentResolver(), uri);
-                            }catch (IOException e){
-                                Toast.makeText(UploadActivity.this,e.getMessage(), Toast.LENGTH_SHORT).show();
+                            @Override
+                            public void onActivityResult(ActivityResult result) {
+                                if(result.getResultCode() == Activity.RESULT_OK){
+                                    Intent data = result.getData();
+                                    assert  data!= null;
+                                    uri = data.getData();
+                                    try {
+                                        bitmapImage = MediaStore.Images.Media.getBitmap(getContentResolver(), uri);
+                                    }catch (IOException e){
+                                        Toast.makeText(UploadActivity.this,e.getMessage(), Toast.LENGTH_SHORT).show();
+                                    }
+                                    uploadImage.setImageBitmap(bitmapImage);
+                                }else{
+                                    Toast.makeText(UploadActivity.this, "No image selected", Toast.LENGTH_SHORT).show();
+                                }
                             }
-                            uploadImage.setImageBitmap(bitmapImage);
-                        }else{
-                            Toast.makeText(UploadActivity.this, "No image selected", Toast.LENGTH_SHORT).show();
-                        }
-                    }
-                });
+                        });
         uploadImage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -83,17 +88,19 @@ public class UploadActivity extends AppCompatActivity {
             }
         });
     }
-    private void storeImage(){
-        if(!uploadName.getText().toString().isEmpty()&&
-                !uploadEmail.getText().toString().isEmpty() &&
-        uploadImage.getDrawable()!= null && bitmapImage!= null){
+    private void storeImage() {
+        String name = uploadName.getText().toString();
+        String email = uploadEmail.getText().toString();
 
-            dbHelper.storeData(new ModelClass(uploadName.getText().toString(),
-                uploadEmail.getText().toString(),bitmapImage));
-            Intent intent = new Intent(UploadActivity.this,MainActivity.class);
+        if (!name.isEmpty() && !email.isEmpty() && isEmailValid(email) && uploadImage.getDrawable() != null && bitmapImage != null) {
+            dbHelper.storeData(new ModelClass(name, email, bitmapImage));
+            Intent intent = new Intent(UploadActivity.this, MainActivity.class);
             startActivity(intent);
-        }else{
-            Toast.makeText(this,"Fields are mandatory",Toast.LENGTH_SHORT).show();
+        } else {
+            Toast.makeText(this, "Fields are mandatory or email is invalid", Toast.LENGTH_SHORT).show();
         }
+    }
+    private boolean isEmailValid(CharSequence email) {
+        return android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches();
     }
 }

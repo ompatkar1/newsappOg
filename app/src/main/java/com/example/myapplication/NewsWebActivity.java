@@ -2,12 +2,16 @@ package com.example.myapplication;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.ContentValues;
 import android.content.Intent;
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.view.View;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
+import android.widget.Toast;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
@@ -28,7 +32,12 @@ public class NewsWebActivity extends AppCompatActivity {
         webView.setWebViewClient(new WebViewClient());
         webView.loadUrl(url);
 
+        if (url != null) {
+            webView.loadUrl(url);
+        }
+
         FloatingActionButton fabShare = findViewById(R.id.fab_share);
+
 
         fabShare.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -37,6 +46,9 @@ public class NewsWebActivity extends AppCompatActivity {
                 shareNews(webView.getUrl());
             }
         });
+
+
+
     }
 
     private void shareNews(String newsUrl) {
@@ -46,7 +58,6 @@ public class NewsWebActivity extends AppCompatActivity {
 
         startActivity(Intent.createChooser(shareIntent, "Share News"));
     }
-
 
     @Override
     public void onBackPressed(){

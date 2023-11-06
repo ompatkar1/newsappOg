@@ -1,6 +1,7 @@
 package com.example.myapplication;
 
 import android.content.Intent;
+import android.os.AsyncTask;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -43,10 +44,23 @@ public class NewsRecyclerAdapter extends RecyclerView.Adapter<NewsRecyclerAdapte
             Intent intent = new Intent(v.getContext(),NewsWebActivity.class);
             intent.putExtra("url",article.getUrl());
             v.getContext().startActivity(intent);
+
+            saveArticleToDatabase(article);
         }));
+    }
+    private void saveArticleToDatabase(Article article) {
+        AppDatabase database = MyApp.database;
+        if (database != null) {
+            NewsArticle newsArticle = new NewsArticle();
+            newsArticle.title = article.getTitle();
+            newsArticle.source = article.getSource().getName();
+            newsArticle.imageUrl = article.getUrlToImage();
+            newsArticle.url = article.getUrl();
 
-
-
+            AsyncTask.execute(() -> {
+                database.newsArticleDao().insert(newsArticle);
+            });
+        }
     }
     void updateData(List<Article>data){
         articleList.clear();

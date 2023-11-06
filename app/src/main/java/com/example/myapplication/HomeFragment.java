@@ -1,9 +1,20 @@
 package com.example.myapplication;
 
+import android.app.NotificationChannel;
+import android.app.NotificationManager;
+import android.app.PendingIntent;
+import android.content.Context;
+import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.os.Build;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.core.app.ActivityCompat;
+import androidx.core.app.NotificationCompat;
+import androidx.core.app.NotificationManagerCompat;
+import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -23,6 +34,8 @@ import com.kwabenaberko.newsapilib.models.response.ArticleResponse;
 import java.util.ArrayList;
 import java.util.List;
 
+import androidx.core.app.NotificationManagerCompat;
+
 
 public class HomeFragment extends Fragment implements View.OnClickListener {
 
@@ -33,11 +46,12 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
     SearchView searchView;
 
 
-
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_home, container, false);
+
+
 
         searchView = rootView.findViewById(R.id.Search_view);
         recyclerView = rootView.findViewById(R.id.Recycler_view);
@@ -62,7 +76,7 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String query) {
-                getNews("General",query);
+                getNews("General", query);
                 return true;
             }
 
@@ -72,7 +86,7 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
             }
         });
 
-        getNews("General",null);
+        getNews("General", null);
 
         return rootView;
     }
@@ -83,38 +97,38 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
         recyclerView.setAdapter(adapter);
     }
 
-    void getNews(String category,String query) {
-        NewsApiClient newsApiClient = new NewsApiClient("04f9943d02c24618add9573ee1366030");
+    void getNews(String category, String query) {
+        NewsApiClient newsApiClient = new NewsApiClient("0e067059ab9347cc86446e6766622193");
         newsApiClient.getTopHeadlines(
                 new TopHeadlinesRequest.Builder()
                         .language("en")
                         .q(query)
                         .category(category)
                         .build(),
-                new NewsApiClient.ArticlesResponseCallback(){
+                new NewsApiClient.ArticlesResponseCallback() {
 
 
                     @Override
                     public void onSuccess(ArticleResponse response) {
+                        if (isAdded()) {
                         requireActivity().runOnUiThread(() -> {
                             Log.d("SearchResults", "Received " + response.getTotalResults() + " results");
                             articleList = response.getArticles();
                             adapter.updateData(articleList);
-                            adapter.notifyDataSetChanged();;
+                            adapter.notifyDataSetChanged();
+
                         });
+                        }
                     }
 
                     @Override
                     public void onFailure(Throwable throwable) {
-                        Log.i("GOT FAILURE",throwable.getMessage());
+                        Log.i("GOT FAILURE", throwable.getMessage());
                     }
 
                 }
         );
     }
-
-
-
     @Override
     public void onClick(View v) {
         Button btn = (Button) v;

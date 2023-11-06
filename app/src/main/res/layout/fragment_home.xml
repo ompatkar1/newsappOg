@@ -5,7 +5,7 @@
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
-    android:theme="@style/Theme.AppCompat.Light"
+    android:background="@drawable/appbackpurple"
     tools:context=".HomeFragment">
 
 
@@ -37,6 +37,7 @@
                 android:layout_height="wrap_content"
                 android:layout_margin="6dp"
                 android:text="General"
+                android:background="@drawable/edittext_border"
                 android:textColor="@color/mySecond" />
 
             <Button
@@ -45,6 +46,7 @@
                 android:layout_height="wrap_content"
                 android:layout_margin="6dp"
                 android:text="Business"
+                android:background="@drawable/edittext_border"
                 android:textColor="@color/mySecond" />
 
             <Button
@@ -53,6 +55,7 @@
                 android:layout_height="wrap_content"
                 android:layout_margin="6dp"
                 android:text="Entertainment"
+                android:background="@drawable/edittext_border"
                 android:textColor="@color/mySecond" />
 
             <Button
@@ -61,6 +64,7 @@
                 android:layout_height="wrap_content"
                 android:layout_margin="6dp"
                 android:text="Health"
+                android:background="@drawable/edittext_border"
                 android:textColor="@color/mySecond" />
 
             <Button
@@ -69,6 +73,7 @@
                 android:layout_height="wrap_content"
                 android:layout_margin="6dp"
                 android:text="Science"
+                android:background="@drawable/edittext_border"
                 android:textColor="@color/mySecond" />
 
             <Button
@@ -77,6 +82,7 @@
                 android:layout_height="wrap_content"
                 android:layout_margin="6dp"
                 android:text="Sports"
+                android:background="@drawable/edittext_border"
                 android:textColor="@color/mySecond" />
 
             <Button
@@ -85,6 +91,7 @@
                 android:layout_height="wrap_content"
                 android:layout_margin="6dp"
                 android:text="Technology"
+                android:background="@drawable/edittext_border"
                 android:textColor="@color/mySecond" />
 
 
